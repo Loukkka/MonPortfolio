@@ -8,7 +8,7 @@ Ce projet est configuré pour être déployé automatiquement sur GitHub Pages.
 
 ### Configuration automatique
 
-1. **Créer un nouveau repository sur GitHub** nommé `MonPortfolio`
+1. **Le repository GitHub existe déjà** : `MonPortfolio`
 2. **Pousser le code** vers le repository
 3. **Activer GitHub Pages** dans les paramètres du repository :
    - Aller dans `Settings` > `Pages`
@@ -53,7 +53,7 @@ src/
 ## 🌐 Accès au portfolio
 
 Une fois déployé, le portfolio sera accessible à :
-`https://loukapoulbriere.github.io/MonPortfolio`
+`https://loukkka.github.io/MonPortfolio`
 
 ## 📝 Technologies utilisées
 
