@@ -10,7 +10,7 @@ const projects = [
     title: "Stage chez SND Digital",
     description: "Participation à plusieurs missions liées à la communication visuelle et au développement web.",
     fullDescription: "Durant mon stage chez SND Digital, j'ai travaillé sur la refonte du site web de l'entreprise, la création de supports de communication (affiches, présentations, vidéos), l'analyse SEO et la réalisation de maquettes interactives et d'animations. Ce stage m'a permis d'allier design, stratégie digitale et esprit d'entreprise tout en utilisant des outils professionnels tels que Figma, WordPress, Illustrator et After Effects.",
-    image: "https://loukkka.github.io/MonPortfolio/src/assets/1.png",
+    image: "/MonPortfolio/assets/1.png",
     tags: ["Figma", "WordPress", "Illustrator", "After Effects"],
     date: "Avril 2025 - Juin 2025",
     category: "Stage",
