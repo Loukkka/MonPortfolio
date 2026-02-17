@@ -1,14 +1,15 @@
 import { motion, useScroll, useTransform } from 'motion/react';
-import { User, Heart, Target, Lightbulb, Zap, Coffee, Music, Gamepad2, Film, Trophy } from 'lucide-react';
-import { useRef } from 'react';
-import profileImage from 'figma:asset/1978daaba94b4cebb7e8a20587aa0b061bbca8dc.png';
+import { User, Heart, Target, Lightbulb, Zap, CalendarDays, MapPin, Home, Globe } from 'lucide-react';
+import { useRef, lazy, Suspense } from 'react';
+
+const ModelViewer = lazy(() => import('./ModelViewer').then(m => ({ default: m.ModelViewer })));
 
 const highlights = [
   {
     icon: Heart,
     title: 'Passion',
     description: 'Passionné par le design graphique et le motion design depuis plusieurs années',
-    color: 'from-cyan-500 to-blue-500',
+    color: 'from-blue-500 to-cyan-500',
   },
   {
     icon: Target,
@@ -20,47 +21,23 @@ const highlights = [
     icon: Lightbulb,
     title: 'Innovation',
     description: 'Toujours à l\'affût des dernières tendances et technologies',
-    color: 'from-cyan-600 to-blue-600',
-  },
-];
-
-const hobbies = [
-  { 
-    name: 'Serveur Fivem', 
-    icon: Gamepad2, 
-    emoji: '🎮',
-    description: 'Gestion et développement',
-    color: 'from-cyan-500 to-blue-500'
-  },
-  { 
-    name: 'Jeux Vidéos', 
-    icon: Gamepad2, 
-    emoji: '🕹️',
-    description: 'Gaming compétitif',
-    color: 'from-blue-500 to-cyan-500'
-  },
-  { 
-    name: 'Séries & Films', 
-    icon: Film, 
-    emoji: '🎬',
-    description: 'Cinéphile passionné',
-    color: 'from-cyan-600 to-blue-600'
-  },
-  { 
-    name: 'Compétitivité', 
-    icon: Trophy, 
-    emoji: '🏆',
-    description: 'Esprit de challenge',
-    color: 'from-blue-600 to-cyan-600'
+    color: 'from-blue-500 to-cyan-500',
   },
 ];
 
 const stats = [
-  { value: '23/07/2005', label: 'Date de naissance', icon: '🎂' },
-  { value: 'Limoges', label: 'Ville', icon: '📍' },
-  { value: '87000', label: 'Code postal', icon: '🏠' },
-  { value: 'France', label: 'Pays', icon: '🇫🇷' },
+  { value: '23/07/2005', label: 'Date de naissance', icon: '🎂', lucideIcon: 'calendar' },
+  { value: 'Limoges', label: 'Ville', icon: '📍', lucideIcon: 'mapPin' },
+  { value: '87000', label: 'Code postal', icon: '🏠', lucideIcon: 'home' },
+  { value: 'France', label: 'Pays', icon: 'FR', lucideIcon: 'globe' },
 ];
+
+const statIcons: Record<string, React.ElementType> = {
+  calendar: CalendarDays,
+  mapPin: MapPin,
+  home: Home,
+  globe: Globe,
+};
 
 const languages = [
   { 
@@ -68,13 +45,15 @@ const languages = [
     code: 'FR',
     level: 'Langue maternelle', 
     percentage: 100,
-    color: 'from-cyan-500 to-blue-500'
+    displayValue: 'C2',
+    color: 'from-blue-500 to-cyan-500'
   },
   { 
     name: 'English', 
     code: 'EN',
     level: 'Bon niveau', 
     percentage: 70,
+    displayValue: 'B2',
     color: 'from-blue-500 to-cyan-500'
   },
   { 
@@ -82,7 +61,8 @@ const languages = [
     code: 'ES',
     level: 'Notions', 
     percentage: 40,
-    color: 'from-cyan-600 to-blue-600'
+    displayValue: 'B3',
+    color: 'from-blue-500 to-cyan-500'
   },
 ];
 
@@ -98,7 +78,7 @@ export function AboutSection() {
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
 
   return (
-    <div ref={sectionRef} className="min-h-screen relative overflow-hidden py-32 flex items-center">
+    <div ref={sectionRef} className="relative overflow-hidden py-24">
       {/* Animated Background */}
       <div className="absolute inset-0">
         <div className="absolute top-40 right-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
@@ -120,7 +100,9 @@ export function AboutSection() {
             transition={{ type: 'spring' }}
             className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-full mb-6"
           >
-            <User className="w-4 h-4 text-white" />
+            <div className="w-6 h-6 flex items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 shadow-sm shadow-blue-500/30">
+              <User className="w-3.5 h-3.5 text-white" />
+            </div>
             <span className="text-cyan-400">À propos de moi</span>
           </motion.div>
 
@@ -131,8 +113,8 @@ export function AboutSection() {
           </h2>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-start mb-20">
-          {/* Left - Avatar & Info */}
+        <div className="grid lg:grid-cols-2 gap-16 items-center mb-12">
+          {/* Left - Avatar */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -143,92 +125,40 @@ export function AboutSection() {
             {/* Avatar Card */}
             <motion.div
               style={{ scale }}
-              className="relative mb-8"
+              className="relative"
             >
               <div className="relative rounded-3xl overflow-hidden border-2 border-cyan-500/30 shadow-2xl shadow-cyan-500/20 bg-gradient-to-br from-gray-900 via-black to-gray-900 aspect-square">
                 
                 {/* Modern 3D Liquid Morphing Shape */}
                 <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-                  {/* Animated liquid blobs - PLUS GRANDS */}
-                  <motion.div
-                    animate={{
-                      scale: [1, 1.2, 1],
-                      rotate: [0, 180, 360],
-                      borderRadius: ['30% 70% 70% 30% / 30% 30% 70% 70%', '70% 30% 30% 70% / 70% 70% 30% 30%', '30% 70% 70% 30% / 30% 30% 70% 70%'],
-                    }}
-                    transition={{
-                      duration: 8,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    }}
-                    className="absolute w-96 h-96 bg-gradient-to-br from-cyan-500/40 to-blue-500/40 blur-3xl"
+                  {/* Static blurred blobs instead of animated liquid */}
+                  <div
+                    className="absolute w-96 h-96 bg-gradient-to-br from-cyan-500/40 to-blue-500/40 blur-3xl will-change-transform"
+                    style={{ borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70%', animation: 'blobMorph1 12s ease-in-out infinite' }}
                   />
-                  
-                  <motion.div
-                    animate={{
-                      scale: [1.2, 1, 1.2],
-                      rotate: [360, 180, 0],
-                      borderRadius: ['70% 30% 30% 70% / 70% 70% 30% 30%', '30% 70% 70% 30% / 30% 30% 70% 70%', '70% 30% 30% 70% / 70% 70% 30% 30%'],
-                    }}
-                    transition={{
-                      duration: 10,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    }}
-                    className="absolute w-80 h-80 bg-gradient-to-br from-blue-500/30 to-cyan-500/30 blur-3xl"
+                  <div
+                    className="absolute w-80 h-80 bg-gradient-to-br from-blue-500/30 to-cyan-500/30 blur-3xl will-change-transform"
+                    style={{ borderRadius: '70% 30% 30% 70% / 70% 70% 30% 30%', animation: 'blobMorph2 14s ease-in-out infinite' }}
                   />
+                  <style>{`
+                    @keyframes blobMorph1 { 0%, 100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.15) rotate(180deg); } }
+                    @keyframes blobMorph2 { 0%, 100% { transform: scale(1.15) rotate(360deg); } 50% { transform: scale(1) rotate(180deg); } }
+                    @keyframes gentleFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+                  `}</style>
 
-                  {/* Photo Profile avec Parallax */}
-                  <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 1, type: 'spring' }}
-                    style={{ y: scale }}
-                    className="relative z-10 w-full h-full flex items-center justify-center"
-                  >
-                    <motion.img
-                      src={profileImage}
-                      alt="Louka Poulbriere"
-                      className="w-[70%] h-[70%] object-contain"
-                      animate={{
-                        y: [0, -10, 0],
-                      }}
-                      transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                      }}
-                    />
-                  </motion.div>
+                  {/* 3D Model */}
+                  <div className="relative z-10 w-full h-full">
+                    <Suspense fallback={
+                      <div className="w-full h-full flex items-center justify-center">
+                        <div className="w-12 h-12 border-2 border-cyan-500/30 border-t-cyan-400 rounded-full animate-spin" />
+                      </div>
+                    }>
+                      <ModelViewer />
+                    </Suspense>
+                  </div>
                 </div>
               </div>
             </motion.div>
-
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 gap-4">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  className="relative group"
-                >
-                  <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl p-4 text-center hover:border-cyan-500/50 transition-all">
-                    <div className="text-3xl mb-2">
-                      {stat.icon}
-                    </div>
-                    <div className="text-cyan-400 mb-1">{stat.value}</div>
-                    <div className="text-gray-400 text-sm">{stat.label}</div>
-                  </div>
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-br from-cyan-500 to-blue-500 blur-xl -z-10 rounded-xl opacity-0 group-hover:opacity-30 transition-opacity"
-                  />
-                </motion.div>
-              ))}
-            </div>
           </motion.div>
 
           {/* Right - Bio & Highlights */}
@@ -237,31 +167,26 @@ export function AboutSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="space-y-8"
+            className="space-y-6"
           >
             {/* Bio */}
             <motion.div
               whileHover={{ scale: 1.02 }}
               className="relative bg-gradient-to-br from-cyan-500/10 to-blue-500/10 backdrop-blur-sm border border-white/10 rounded-3xl p-8"
             >
-              <motion.div
-                animate={{ rotate: [0, 360] }}
-                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                className="absolute top-4 right-4 text-2xl"
-              >
-                ✨
-              </motion.div>
+
               
-              <h3 className="text-white mb-4 flex items-center gap-2">
-                <Zap className="w-5 h-5 text-white" />
+              <h3 className="text-white mb-4 flex items-center gap-3">
+                <div className="w-10 h-10 flex items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 shadow-lg shadow-blue-500/30">
+                  <Zap className="w-5 h-5 text-white" />
+                </div>
                 Bonjour !
               </h3>
               <p className="text-gray-300 leading-relaxed mb-4">
-                Je suis <span className="text-cyan-400">Louka Poulbriere</span>, actuellement étudiant en <span className="text-purple-400">BUT MMI</span>, passionné par le <span className="text-pink-400">design graphique</span> et le <span className="text-cyan-400">motion design</span>.
+                Je suis <span className="text-cyan-400 font-medium">Louka Poulbriere</span>, étudiant en <span className="text-cyan-400 font-medium">BUT MMI</span> et passionné par le <span className="text-cyan-400 font-medium">design graphique</span>, le <span className="text-cyan-400 font-medium">motion design</span> et le <span className="text-cyan-400 font-medium">développement web</span>.
               </p>
               <p className="text-gray-300 leading-relaxed">
-                Créatif et curieux, je réalise des supports modernes et dynamiques adaptés aux besoins des entreprises. 
-                J'aime explorer les nouvelles technologies et créer des expériences visuelles uniques.
+                Curieux et créatif, je conçois des expériences visuelles modernes et immersives, en alliant esthétique et fonctionnalité pour répondre aux besoins concrets des entreprises.
               </p>
             </motion.div>
 
@@ -285,8 +210,8 @@ export function AboutSection() {
                       />
                       
                       <div className="relative z-10 flex items-start gap-4">
-                        <div className={`w-12 h-12 flex items-center justify-center rounded-xl bg-gradient-to-br ${highlight.color} shadow-lg`}>
-                          <Icon className="w-6 h-6 text-white" />
+                        <div className={`w-14 h-14 flex items-center justify-center rounded-2xl bg-gradient-to-br ${highlight.color} shadow-lg shadow-blue-500/30`}>
+                          <Icon className="w-7 h-7 text-white" />
                         </div>
                         <div className="flex-1">
                           <h4 className="text-white mb-1">{highlight.title}</h4>
@@ -306,15 +231,59 @@ export function AboutSection() {
           </motion.div>
         </div>
 
-        {/* Languages */}
+        {/* Stats Grid - Full width */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="mb-20"
         >
-          <h3 className="text-white text-center mb-12 flex items-center justify-center gap-2 text-3xl">
-            <Coffee className="w-5 h-5 text-white" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {stats.map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="relative group"
+              >
+                <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl p-6 text-center hover:border-cyan-500/50 transition-all">
+                  <div className="flex justify-center mb-4">
+                    {(() => {
+                      const StatIcon = statIcons[stat.lucideIcon];
+                      return StatIcon ? (
+                        <div className="w-12 h-12 flex items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 shadow-lg shadow-blue-500/30">
+                          <StatIcon className="w-6 h-6 text-white" />
+                        </div>
+                      ) : (
+                        <div className="w-12 h-12 flex items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 shadow-lg shadow-blue-500/30">
+                          <span className="text-white font-bold text-sm">{stat.icon}</span>
+                        </div>
+                      );
+                    })()}
+                  </div>
+                  <div className="text-cyan-400 font-medium mb-2">{stat.value}</div>
+                  <div className="text-gray-400 text-sm">{stat.label}</div>
+                </div>
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-br from-cyan-500 to-blue-500 blur-xl -z-10 rounded-xl opacity-0 group-hover:opacity-30 transition-opacity"
+                />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-20"
+        >
+          <h3 className="text-white text-center mb-12 flex items-center justify-center gap-3 text-3xl">
+            <div className="w-10 h-10 flex items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 shadow-lg shadow-blue-500/30">
+              <Globe className="w-5 h-5 text-white" />
+            </div>
             Langues
           </h3>
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
@@ -368,7 +337,7 @@ export function AboutSection() {
                       <span className="text-3xl font-bold bg-gradient-to-br from-cyan-400 to-blue-400 bg-clip-text text-transparent">
                         {lang.code}
                       </span>
-                      <span className="text-xs text-gray-400 mt-1">{lang.percentage}%</span>
+                      <span className="text-xs text-gray-400 mt-1">{lang.displayValue}</span>
                     </div>
                   </div>
                   
@@ -381,90 +350,6 @@ export function AboutSection() {
                 />
               </motion.div>
             ))}
-          </div>
-        </motion.div>
-
-        {/* Hobbies - Liquid Glass Style */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <h3 className="text-white text-center mb-12 flex items-center justify-center gap-2 text-3xl">
-            <Coffee className="w-5 h-5 text-white" />
-            Loisirs & Passions
-          </h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {hobbies.map((hobby, index) => {
-              const Icon = hobby.icon;
-              return (
-                <motion.div
-                  key={hobby.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, type: 'spring' }}
-                  whileHover={{ 
-                    y: -8,
-                    transition: { duration: 0.3 }
-                  }}
-                  className="relative group"
-                >
-                  {/* Liquid Glass Card */}
-                  <div className="relative h-full overflow-hidden rounded-3xl min-h-[180px]">
-                    {/* Glass Background with Blur */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl" />
-                    
-                    {/* Colored Gradient Overlay */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${hobby.color} opacity-20 mix-blend-overlay`} />
-                    
-                    {/* Animated Liquid Blob */}
-                    <motion.div
-                      animate={{
-                        scale: [1, 1.2, 1],
-                        rotate: [0, 90, 0],
-                        borderRadius: ['60% 40% 30% 70%', '30% 60% 70% 40%', '60% 40% 30% 70%'],
-                      }}
-                      transition={{
-                        duration: 8,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                        delay: index * 0.5,
-                      }}
-                      className={`absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-br ${hobby.color} opacity-20 blur-3xl`}
-                    />
-                    
-                    {/* Border Shine Effect */}
-                    <div className="absolute inset-0 rounded-3xl border border-white/20 group-hover:border-white/40 transition-all" />
-                    
-                    {/* Content */}
-                    <div className="relative z-10 p-6 text-center h-full flex flex-col justify-center">
-                      <div className="text-4xl mb-3">{hobby.emoji}</div>
-                      <h4 className="text-white mb-1">{hobby.name}</h4>
-                      <p className="text-gray-300 text-sm">{hobby.description}</p>
-                      
-                      {/* Bottom Glow */}
-                      <motion.div
-                        animate={{
-                          opacity: [0.3, 0.6, 0.3],
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          delay: index * 0.3,
-                        }}
-                        className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-1 bg-gradient-to-r ${hobby.color} blur-sm`}
-                      />
-                    </div>
-                  </div>
-
-                  {/* External Glow */}
-                  <motion.div
-                    className={`absolute inset-0 bg-gradient-to-br ${hobby.color} blur-xl -z-10 rounded-3xl opacity-0 group-hover:opacity-40 transition-opacity`}
-                  />
-                </motion.div>
-              );
-            })}
           </div>
         </motion.div>
       </motion.div>

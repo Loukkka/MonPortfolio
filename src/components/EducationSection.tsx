@@ -4,22 +4,22 @@ import { useRef } from 'react';
 
 const experiences = [
   {
-    year: '2025',
-    title: 'Stage de deuxième année',
-    organization: 'Lycée A. Renoir',
+    year: '2026',
+    title: 'Stage de troisième année',
+    organization: 'la19agency, Tulle',
     type: 'Stage en BUT',
-    description: 'Stage de deuxième année en communication et design graphique.',
-    icon: '🎓',
+    description: 'Stage de troisième année en 2026 chez la19agency à Tulle : posts, sites WordPress, vidéos et supports de communication.',
+    icon: '💼',
     color: 'from-cyan-500 to-blue-500',
     current: true,
   },
   {
-    year: '2024',
-    title: 'Fin du Lycée Georges Cabanis',
-    organization: 'Communication site',
-    type: 'Projet SAE - Blason',
-    description: 'Réalisation d\'un site de communication avec création d\'un blason personnalisé.',
-    icon: '🎨',
+    year: '2025',
+    title: 'Stage de 2ème année de BUT',
+    organization: 'SND Digital, Paris',
+    type: 'Stage - Communication Digitale',
+    description: 'Stage de deuxième année en 2025 chez SND Digital à Paris : création de maquettes, posts, supports de communication et vidéos pour clients.',
+    icon: '🏢',
     color: 'from-blue-500 to-cyan-500',
   },
   {
@@ -43,9 +43,9 @@ const experiences = [
   {
     year: '2022',
     title: 'Lycée Georges Cabanis, Brive 19',
-    organization: 'Projet de recherche STDD',
+    organization: 'Projet de recherche STI2D',
     type: 'Projet scolaire',
-    description: 'Premier projet de recherche en sciences et technologies du design.',
+    description: 'Premier projet de recherche en sciences et technologies de l\'industrie et du développement durable.',
     icon: '🔬',
     color: 'from-cyan-500 to-blue-500',
   },
@@ -117,7 +117,9 @@ export function EducationSection() {
             transition={{ type: 'spring' }}
             className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-full mb-6"
           >
-            <GraduationCap className="w-4 h-4 text-white" />
+            <div className="w-6 h-6 flex items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 shadow-sm shadow-blue-500/30">
+              <GraduationCap className="w-3.5 h-3.5 text-white" />
+            </div>
             <span className="text-cyan-400">Formation & Parcours</span>
           </motion.div>
 
@@ -211,33 +213,6 @@ export function EducationSection() {
                     {skill}
                   </motion.span>
                 ))}
-              </div>
-
-              {/* Progress Bar */}
-              <div className="mt-6">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-gray-400 flex items-center gap-2">
-                    <Award className="w-4 h-4 text-white" />
-                    Progression de la formation
-                  </span>
-                  <span className="text-cyan-400">{currentEducation.progress}%</span>
-                </div>
-                <div className="h-3 bg-white/5 rounded-full overflow-hidden relative">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${currentEducation.progress}%` }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.5, delay: 0.5 }}
-                    className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 relative overflow-hidden"
-                  >
-                    {/* Shimmer Effect */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                      animate={{ x: ['-100%', '200%'] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-                    />
-                  </motion.div>
-                </div>
               </div>
             </div>
 

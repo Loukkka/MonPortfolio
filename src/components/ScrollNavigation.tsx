@@ -1,13 +1,13 @@
 import { motion } from 'motion/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Menu, X } from 'lucide-react';
 
 const navItems = [
   { id: 'hero', label: 'Accueil' },
+  { id: 'projects', label: 'Projets' },
   { id: 'about', label: 'À propos' },
   { id: 'education', label: 'Parcours' },
   { id: 'skills', label: 'Compétences' },
-  { id: 'projects', label: 'Projets' },
   { id: 'services', label: 'Services' },
   { id: 'contact', label: 'Contact' },
 ];
@@ -18,24 +18,29 @@ export function ScrollNavigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-
-      // Detect active section
-      const sections = navItems.map((item) => item.id);
-      for (const sectionId of sections) {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            setActiveSection(sectionId);
-            break;
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 50);
+          const sections = navItems.map((item) => item.id);
+          for (const sectionId of sections) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+              const rect = element.getBoundingClientRect();
+              if (rect.top <= 100 && rect.bottom >= 100) {
+                setActiveSection(sectionId);
+                break;
+              }
+            }
           }
-        }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { useMemo } from 'react';
 
 interface Particle {
   id: number;
@@ -21,31 +21,26 @@ const generateParticles = (count: number): Particle[] => {
 };
 
 export function FloatingParticles({ count = 30 }: { count?: number }) {
-  const particles = generateParticles(count);
+  const particles = useMemo(() => generateParticles(count), [count]);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      <style>{`
+        @keyframes floatParticle {
+          0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+          50% { opacity: 0.4; }
+        }
+      `}</style>
       {particles.map((particle) => (
-        <motion.div
+        <div
           key={particle.id}
-          className="absolute rounded-full bg-gradient-to-br from-cyan-400/30 to-blue-400/30 blur-sm"
+          className="absolute rounded-full bg-cyan-400/20 blur-sm will-change-transform"
           style={{
             left: `${particle.x}%`,
             top: `${particle.y}%`,
             width: particle.size,
             height: particle.size,
-          }}
-          animate={{
-            y: [0, -100, 0],
-            x: [0, Math.random() * 50 - 25, 0],
-            opacity: [0, 0.6, 0],
-            scale: [0, 1, 0],
-          }}
-          transition={{
-            duration: particle.duration,
-            delay: particle.delay,
-            repeat: Infinity,
-            ease: 'easeInOut',
+            animation: `floatParticle ${particle.duration}s ${particle.delay}s ease-in-out infinite`,
           }}
         />
       ))}

@@ -21,11 +21,31 @@ export function ContactSection() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    setTimeout(() => {
-      toast.success('Merci pour votre message ! Je vous répondrai rapidement.');
-      setFormData({ name: '', email: '', subject: '', message: '' });
+    // Créer les données du formulaire
+    const form = e.target as HTMLFormElement;
+    const formDataToSend = new FormData(form);
+    
+    // Envoyer via fetch à FormSubmit
+    fetch('https://formsubmit.co/louka.poulbriere@etu.unilim.fr', {
+      method: 'POST',
+      body: formDataToSend,
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+    .then(response => {
+      if (response.ok) {
+        toast.success('Merci pour votre message ! Je vous répondrai rapidement.');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        toast.error('Erreur lors de l\'envoi. Veuillez réessayer.');
+      }
       setIsSubmitting(false);
-    }, 1500);
+    })
+    .catch(() => {
+      toast.error('Erreur lors de l\'envoi. Veuillez réessayer.');
+      setIsSubmitting(false);
+    });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -65,7 +85,6 @@ export function ContactSection() {
   const socialLinks = [
     { icon: Github, label: 'GitHub', href: 'https://github.com/loukapoulbriere', username: '@loukapoulbriere' },
     { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/in/louka-poulbriere', username: 'Louka Poulbriere' },
-    { icon: MessageCircle, label: 'Portfolio', href: 'https://loukapoulbriere.myportfolio.com/', username: 'myportfolio.com' },
   ];
 
   return (
@@ -91,7 +110,9 @@ export function ContactSection() {
             transition={{ type: 'spring' }}
             className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-full mb-6"
           >
-            <MessageCircle className="w-4 h-4 text-white" />
+            <div className="w-6 h-6 flex items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 shadow-sm shadow-blue-500/30">
+              <MessageCircle className="w-3.5 h-3.5 text-white" />
+            </div>
             <span className="text-cyan-400">Restons en Contact</span>
           </motion.div>
 
@@ -239,6 +260,12 @@ export function ContactSection() {
           >
             <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-cyan-500/50 transition-all duration-500">
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Champs cachés pour FormSubmit */}
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_next" value={window.location.href} />
+                <input type="hidden" name="_subject" value="Nouveau message depuis votre portfolio!" />
+                <input type="hidden" name="_template" value="box" />
+                
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-gray-300">
                     Nom complet

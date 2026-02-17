@@ -1,13 +1,10 @@
 import { motion } from 'motion/react';
-import { ArrowDown, Github, Linkedin, Mail, Download, FileText, Award, Briefcase, GraduationCap, RotateCcw } from 'lucide-react';
+import { ArrowDown, Github, Linkedin, Mail, Download } from 'lucide-react';
 import { Button } from './ui/button';
-import { useState } from 'react';
-import cvImage from 'figma:asset/bd724a42484341b95410bba1d35baa62a5204b19.png';
+import cvImage from '../assets/CV portfolio  qr code.png';
 import { Logo } from './Logo';
 
 export function HeroSection() {
-  const [isFlipped, setIsFlipped] = useState(false);
-
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -16,6 +13,39 @@ export function HeroSection() {
       const offsetPosition = elementPosition + window.scrollY - offset;
       window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     }
+  };
+
+  const downloadCvAsPdf = async () => {
+    const { jsPDF } = await import('jspdf');
+
+    const image = new Image();
+    image.src = cvImage;
+
+    await new Promise<void>((resolve, reject) => {
+      image.onload = () => resolve();
+      image.onerror = () => reject(new Error('Impossible de charger l\'image du CV'));
+    });
+
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: 'a4' });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const imageRatio = image.width / image.height;
+    const pageRatio = pageWidth / pageHeight;
+
+    let renderWidth = pageWidth;
+    let renderHeight = pageHeight;
+
+    if (imageRatio > pageRatio) {
+      renderHeight = pageWidth / imageRatio;
+    } else {
+      renderWidth = pageHeight * imageRatio;
+    }
+
+    const x = (pageWidth - renderWidth) / 2;
+    const y = (pageHeight - renderHeight) / 2;
+
+    pdf.addImage(image, 'PNG', x, y, renderWidth, renderHeight, undefined, 'FAST');
+    pdf.save('CV-Louka-Poulbriere.pdf');
   };
 
   return (
@@ -40,34 +70,28 @@ export function HeroSection() {
         />
         
         {/* Floating geometric shapes with varied forms */}
-        {[...Array(12)].map((_, i) => {
+        {[...Array(6)].map((_, i) => {
           const shapes = ['rounded-full', 'rounded-sm', 'rounded-md'];
           const shape = shapes[i % shapes.length];
           return (
-            <motion.div
+            <div
               key={i}
-              animate={{
-                y: [0, -50, 0],
-                x: [0, Math.sin(i) * 20, 0],
-                rotate: [0, 360],
-                opacity: [0.2, 0.8, 0.2],
-              }}
-              transition={{
-                duration: 10 + i * 1.5,
-                repeat: Infinity,
-                ease: 'easeInOut',
-                delay: i * 0.3,
-              }}
-              className="absolute"
+              className="absolute will-change-transform"
               style={{
-                left: `${5 + i * 8}%`,
-                top: `${10 + (i % 5) * 15}%`,
+                left: `${5 + i * 16}%`,
+                top: `${10 + (i % 4) * 20}%`,
+                animation: `floatShape${i % 3} ${10 + i * 2}s ${i * 0.5}s ease-in-out infinite`,
               }}
             >
-              <div className={`w-3 h-3 bg-gradient-to-br from-cyan-400/40 to-blue-400/40 ${shape} backdrop-blur-sm`} />
-            </motion.div>
+              <div className={`w-3 h-3 bg-gradient-to-br from-cyan-400/30 to-blue-400/30 ${shape}`} />
+            </div>
           );
         })}
+        <style>{`
+          @keyframes floatShape0 { 0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.2; } 50% { transform: translateY(-30px) rotate(180deg); opacity: 0.6; } }
+          @keyframes floatShape1 { 0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; } 50% { transform: translateY(-40px) rotate(270deg); opacity: 0.7; } }
+          @keyframes floatShape2 { 0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.2; } 50% { transform: translateY(-25px) rotate(360deg); opacity: 0.5; } }
+        `}</style>
         
         {/* Grid lines */}
         <div className="absolute inset-0 opacity-[0.03]">
@@ -202,9 +226,8 @@ export function HeroSection() {
               </Button>
 
               <Button
-                onClick={() => setIsFlipped(!isFlipped)}
-                variant="outline"
-                className="border-white/10 text-gray-300 hover:bg-white/5 px-8 py-6"
+                onClick={downloadCvAsPdf}
+                className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:from-cyan-400 hover:to-blue-400 border-0 px-8 py-6"
               >
                 <Download className="w-4 h-4 mr-2" />
                 Voir CV
@@ -236,13 +259,12 @@ export function HeroSection() {
             </motion.div>
           </motion.div>
 
-          {/* Right Column - Flip Card Profile */}
+          {/* Right Column - CV Card */}
           <motion.div
             initial={{ x: 50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.8 }}
             className="relative"
-            style={{ perspective: '1000px' }}
           >
             <div className="relative">
               {/* Glow Effect */}
@@ -254,135 +276,55 @@ export function HeroSection() {
                 transition={{ duration: 4, repeat: Infinity }}
                 className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 blur-3xl rounded-full"
               />
-              
-              {/* Flip Card Container */}
+
               <motion.div
-                className="relative w-full aspect-square cursor-pointer"
-                onClick={() => setIsFlipped(!isFlipped)}
-                animate={{ rotateY: isFlipped ? 180 : 0 }}
-                transition={{ duration: 0.6, type: 'spring', stiffness: 100 }}
-                style={{ transformStyle: 'preserve-3d' }}
+                className="relative w-full aspect-square cursor-pointer rounded-2xl overflow-hidden border-2 border-cyan-500/30 shadow-2xl shadow-cyan-500/20"
+                onClick={downloadCvAsPdf}
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.3 }}
               >
-                {/* Front - Profile Image */}
-                <div
-                  className="absolute inset-0 rounded-2xl overflow-hidden border-2 border-cyan-500/30 shadow-2xl shadow-cyan-500/20"
-                  style={{ 
-                    backfaceVisibility: 'hidden',
-                    WebkitBackfaceVisibility: 'hidden'
-                  }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 mix-blend-overlay" />
-                  
-                  {/* Creative 3D Initials Display */}
-                  <div className="relative w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-900 overflow-hidden">
-                    {/* Floating Particles */}
-                    {[...Array(6)].map((_, i) => (
-                      <motion.div
-                        key={i}
-                        animate={{
-                          y: [0, -100, 0],
-                          x: [0, Math.sin(i) * 50, 0],
-                          opacity: [0, 1, 0],
-                        }}
-                        transition={{
-                          duration: 3 + i * 0.5,
-                          repeat: Infinity,
-                          delay: i * 0.2,
-                        }}
-                        className="absolute w-1 h-1 bg-cyan-400 rounded-full"
-                        style={{
-                          left: `${20 + (i * 60) % 80}%`,
-                          bottom: '10%',
-                        }}
-                      />
-                    ))}
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 mix-blend-overlay" />
 
-                    {/* Main Logo */}
-                    <div className="relative z-10 flex flex-col items-center">
-                      <motion.div
-                        initial={{ scale: 0, rotateY: 180 }}
-                        animate={{ scale: 1, rotateY: 0 }}
-                        transition={{ duration: 1, type: 'spring' }}
-                        className="relative"
-                      >
-                        {/* Glow effect behind logo */}
-                        <div className="absolute inset-0 blur-3xl bg-gradient-to-r from-cyan-500 to-blue-500 opacity-50" />
-                        
-                        {/* Logo Component */}
-                        <Logo className="w-40 h-40" />
-                      </motion.div>
-
-                      {/* Subtitle */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 1.5 }}
-                        className="mt-6 text-center"
-                      >
-                        <p className="text-cyan-400 tracking-widest text-sm">CREATIVE DEVELOPER</p>
-                        <motion.div
-                          animate={{ opacity: [0.5, 1, 0.5] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                          className="flex items-center justify-center gap-2 mt-2"
-                        >
-                          <div className="w-2 h-2 rounded-full bg-cyan-400" />
-                          <p className="text-gray-400 text-sm">LOUKA POULBRIERE</p>
-                          <div className="w-2 h-2 rounded-full bg-cyan-400" />
-                        </motion.div>
-                      </motion.div>
-                    </div>
-
-                    {/* Corner Accents */}
-                    <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-cyan-400/50" />
-                    <div className="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2 border-cyan-400/50" />
-                    <div className="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2 border-cyan-400/50" />
-                    <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-cyan-400/50" />
-                  </div>
-
-                  {/* Click Indicator */}
-                  <motion.div
-                    animate={{ opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-black/80 backdrop-blur-xl border border-cyan-500/30 rounded-full flex items-center gap-2"
-                  >
-                    <FileText className="w-4 h-4 text-white" />
-                    <span className="text-cyan-400">Cliquez pour voir le CV</span>
-                  </motion.div>
-                </div>
-
-                {/* Back - CV Image */}
-                <div
-                  className="absolute inset-0 rounded-2xl overflow-hidden border-2 border-cyan-500/30 shadow-2xl shadow-cyan-500/20 bg-black"
-                  style={{ 
-                    backfaceVisibility: 'hidden',
-                    WebkitBackfaceVisibility: 'hidden',
-                    transform: 'rotateY(180deg)'
-                  }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-blue-500/10" />
-                  
-                  {/* CV Image */}
-                  <div className="relative h-full w-full flex items-center justify-center p-4">
-                    <img
-                      src={cvImage}
-                      alt="CV Louka Poulbriere"
-                      className="w-full h-full object-contain"
+                <div className="relative w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-900 overflow-hidden">
+                  {[...Array(3)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-1 h-1 bg-cyan-400 rounded-full will-change-transform"
+                      style={{
+                        left: `${20 + i * 30}%`,
+                        bottom: '10%',
+                        animation: `cardFloat ${3 + i * 0.8}s ${i * 0.3}s ease-in-out infinite`,
+                      }}
                     />
-                    
-                    {/* Rotate Icon Overlay */}
-                    <div className="absolute bottom-4 right-4 w-10 h-10 flex items-center justify-center bg-black/80 backdrop-blur-xl border border-cyan-500/30 rounded-full">
-                      <RotateCcw className="w-5 h-5 text-white" />
-                    </div>
-                    
-                    {/* Back Indicator */}
+                  ))}
+                  <style>{`@keyframes cardFloat { 0%, 100% { transform: translateY(0); opacity: 0; } 50% { transform: translateY(-80px); opacity: 1; } }`}</style>
+
+                  <div className="relative z-10 flex flex-col items-center">
                     <motion.div
-                      animate={{ opacity: [0.5, 1, 0.5] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="absolute top-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-black/80 backdrop-blur-xl border border-cyan-500/30 rounded-full"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 1, type: 'spring' }}
+                      className="relative"
                     >
-                      <span className="text-cyan-400">Cliquez pour revenir</span>
+                      <div className="absolute inset-0 blur-3xl bg-gradient-to-r from-cyan-500 to-blue-500 opacity-50" />
+                      <Logo className="w-40 h-40" />
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1.1 }}
+                      className="mt-6 text-center"
+                    >
+                      <p className="text-cyan-400 tracking-widest text-sm">CREATIVE DEVELOPER</p>
+                      <p className="text-gray-400 text-sm mt-2">Cliquez pour télécharger le CV</p>
                     </motion.div>
                   </div>
+
+                  <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-cyan-400/50" />
+                  <div className="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2 border-cyan-400/50" />
+                  <div className="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2 border-cyan-400/50" />
+                  <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-cyan-400/50" />
                 </div>
               </motion.div>
 
@@ -391,7 +333,7 @@ export function HeroSection() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1, type: 'spring' }}
-                className="absolute -bottom-6 -left-6 px-6 py-4 bg-white/5 backdrop-blur-2xl border border-white/20 rounded-xl pointer-events-none shadow-xl shadow-cyan-500/10"
+                className="absolute -bottom-6 -left-6 px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/20 rounded-xl pointer-events-none shadow-xl shadow-cyan-500/10"
                 style={{
                   background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
                 }}
@@ -404,7 +346,7 @@ export function HeroSection() {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.2, type: 'spring' }}
-                className="absolute -top-6 -right-6 px-6 py-4 bg-white/5 backdrop-blur-2xl border border-white/20 rounded-xl pointer-events-none shadow-xl shadow-blue-500/10"
+                className="absolute -top-6 -right-6 px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/20 rounded-xl pointer-events-none shadow-xl shadow-blue-500/10"
                 style={{
                   background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
                 }}

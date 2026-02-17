@@ -13,6 +13,7 @@ const skillCategories = [
     skills: [
       { name: 'Photoshop', icon: '🎨', description: 'Retouche photo, composition' },
       { name: 'Illustrator', icon: '✏️', description: 'Illustration vectorielle' },
+      { name: 'InDesign', icon: '📄', description: 'Mise en page, PAO' },
       { name: 'Figma', icon: '🎯', description: 'UI/UX Design, prototypage' },
       { name: 'Blender', icon: '🎲', description: 'Modélisation 3D' },
     ],
@@ -27,7 +28,7 @@ const skillCategories = [
     skills: [
       { name: 'Premiere Pro', icon: '🎬', description: 'Montage vidéo professionnel' },
       { name: 'After Effects', icon: '✨', description: 'Motion design, effets visuels' },
-      { name: 'DaVinci Resolve', icon: '🎞️', description: 'Étalonnage colorimétrique' },
+      { name: 'OBS Studio', icon: '📹', description: 'Capture et streaming vidéo' },
     ],
   },
   {
@@ -38,10 +39,8 @@ const skillCategories = [
     borderColor: 'border-cyan-500/30',
     glowColor: 'shadow-cyan-500/20',
     skills: [
-      { name: 'Trafix', icon: '📊', description: 'Gestion de projets' },
       { name: 'Canva', icon: '🎨', description: 'Design rapide' },
       { name: 'Notion', icon: '📝', description: 'Organisation' },
-      { name: 'Miro', icon: '🗂️', description: 'Collaboration visuelle' },
       { name: 'WordPress', icon: '📱', description: 'CMS et sites web' },
     ],
   },
@@ -135,7 +134,9 @@ export function SkillsSection() {
             transition={{ type: 'spring' }}
             className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-full mb-6"
           >
-            <Zap className="w-4 h-4 text-white" />
+            <div className="w-6 h-6 flex items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 shadow-sm shadow-blue-500/30">
+              <Zap className="w-3.5 h-3.5 text-white" />
+            </div>
             <span className="text-cyan-400">Compétences & Expertise</span>
           </motion.div>
 
@@ -236,144 +237,6 @@ export function SkillsSection() {
             </motion.div>
           ))}
         </div>
-
-        {/* Soft Skills - Design innovant liquide */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="relative"
-        >
-          <div className="text-center mb-12">
-            <h3 className="text-white mb-2 flex items-center justify-center gap-2 text-3xl">
-              Compétences Humaines
-            </h3>
-            <p className="text-gray-400">Au-delà de la technique, mes qualités personnelles</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {softSkills.map((skill, index) => (
-              <motion.div
-                key={skill.name}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, type: 'spring' }}
-                whileHover={{ y: -8 }}
-                className="relative group/soft"
-              >
-                {/* Liquid Glass Card */}
-                <div className="relative bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-xl border border-white/10 rounded-3xl p-8 overflow-hidden">
-                  {/* Animated liquid blob background */}
-                  <motion.div
-                    animate={{
-                      rotate: [0, 360],
-                      scale: [1, 1.2, 1],
-                    }}
-                    transition={{
-                      duration: 8,
-                      repeat: Infinity,
-                      ease: 'linear',
-                    }}
-                    className={`absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br ${skill.color} rounded-full blur-3xl opacity-30 group-hover/soft:opacity-50 transition-opacity`}
-                  />
-                  
-                  <motion.div
-                    animate={{
-                      rotate: [360, 0],
-                      scale: [1.2, 1, 1.2],
-                    }}
-                    transition={{
-                      duration: 10,
-                      repeat: Infinity,
-                      ease: 'linear',
-                    }}
-                    className={`absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-br ${skill.color} rounded-full blur-3xl opacity-20 group-hover/soft:opacity-40 transition-opacity`}
-                  />
-
-                  <div className="relative z-10 space-y-4">
-                    {/* Title */}
-                    <h4 className="text-white text-xl">{skill.name}</h4>
-                    
-                    {/* Description */}
-                    <p className="text-gray-400 text-sm leading-relaxed">
-                      {skill.description}
-                    </p>
-
-                    {/* Learning sources with circular indicators */}
-                    <div className="relative pt-2">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="text-xs text-gray-500">Développée par</span>
-                      </div>
-                      
-                      <div className="flex flex-wrap gap-2">
-                        {skill.learnedFrom.map((source, i) => (
-                          <motion.div
-                            key={source}
-                            initial={{ opacity: 0, scale: 0 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 + i * 0.1 + 0.3, type: 'spring' }}
-                            whileHover={{ scale: 1.1, y: -2 }}
-                            className="relative group/tag"
-                          >
-                            <div className={`px-3 py-1.5 bg-gradient-to-r ${skill.color} rounded-full relative overflow-hidden`}>
-                              <div className="absolute inset-0 px-[0px] mx-[0px] pt-[0px] pr-[0px] pb-[60px] pl-[0px] m-[0px]" />
-                              <span className="relative z-10 text-white text-xs text-[13px] text-center mx-[0px] my-[30px] px-[0px] py-[18px] p-[0px] m-[0px]">{source}</span>
-                              
-                              {/* Hover glow */}
-                              <motion.div
-                                className="absolute inset-0 bg-white/20 opacity-0 group-hover/tag:opacity-100 transition-opacity"
-                                animate={{
-                                  scale: [1, 1.2, 1],
-                                }}
-                                transition={{
-                                  duration: 2,
-                                  repeat: Infinity,
-                                }}
-                              />
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Floating particles */}
-                    {[...Array(3)].map((_, i) => (
-                      <motion.div
-                        key={i}
-                        className="absolute w-1 h-1 bg-cyan-400 rounded-full"
-                        style={{
-                          left: `${20 + i * 30}%`,
-                          top: `${30 + i * 20}%`,
-                        }}
-                        animate={{
-                          y: [0, -20, 0],
-                          opacity: [0.2, 0.8, 0.2],
-                        }}
-                        transition={{
-                          duration: 2 + i,
-                          repeat: Infinity,
-                          delay: i * 0.3,
-                        }}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Gradient border on hover */}
-                  <div className="absolute inset-0 rounded-3xl opacity-0 group-hover/soft:opacity-100 transition-opacity duration-300 pointer-events-none">
-                    <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${skill.color} opacity-20`} />
-                  </div>
-                </div>
-
-                {/* Glow effect */}
-                <motion.div
-                  className={`absolute inset-0 bg-gradient-to-br ${skill.color} blur-2xl -z-10 rounded-3xl opacity-0 group-hover/soft:opacity-30 transition-opacity duration-500`}
-                />
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </div>
   );

@@ -24,7 +24,7 @@ const services = [
     icon: Video,
     title: 'Motion Design',
     description: 'Création d\'animations et de vidéos captivantes pour dynamiser vos contenus et marquer les esprits.',
-    features: ['Animation', 'Montage vidéo', 'After Effects', 'Storytelling'],
+    features: ['Animation', 'Montage vidéo', 'Motion vidéo', 'Storytelling'],
   },
   {
     icon: Globe,
@@ -78,7 +78,9 @@ export function ServicesSection() {
             transition={{ type: 'spring' }}
             className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-full mb-6"
           >
-            <Palette className="w-4 h-4 text-white" />
+            <div className="w-6 h-6 flex items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 shadow-sm shadow-blue-500/30">
+              <Palette className="w-3.5 h-3.5 text-white" />
+            </div>
             <span className="text-cyan-400">Ce que je propose</span>
           </motion.div>
 
