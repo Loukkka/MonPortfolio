@@ -88,11 +88,19 @@ export function ProjectDetailPage() {
       </motion.button>
 
       {/* Hero image */}
-      <div className="relative h-[32vh] min-h-[240px] overflow-hidden">
+      <div className={`relative overflow-hidden ${
+        project.slug === 'recettes-etudiants-sportifs' 
+          ? 'h-[24vh] min-h-[200px]' 
+          : 'h-[32vh] min-h-[240px]'
+      }`}>
         <img
           src={project.image}
           alt={project.title}
-          className="w-full h-full object-cover scale-105"
+          className={`w-full h-full scale-105 ${
+            project.slug === 'recettes-etudiants-sportifs'
+              ? 'object-cover object-center'
+              : 'object-cover'
+          }`}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30" />
 
@@ -313,6 +321,31 @@ export function ProjectDetailPage() {
             </motion.a>
           </motion.div>
         ) : null}
+
+        {project.illustrations && project.illustrations.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <div className="bg-gray-900/50 border border-white/[0.07] rounded-3xl p-8 md:p-12">
+              <h2 className="text-xl font-bold text-white mb-8">Illustrations du projet</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {project.illustrations.map((illustration, index) => (
+                  <div key={index} className="rounded-2xl overflow-hidden border border-white/10 bg-black/30">
+                    <img
+                      src={illustration}
+                      alt={`${project.title} illustration ${index + 1}`}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Back button bottom */}
         <motion.div

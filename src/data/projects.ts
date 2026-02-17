@@ -5,6 +5,9 @@ import rocamtourImg from '../assets/rocamatour portfolio.png';
 import rocamtourVideo from '../assets/motion_rocamatour.mp4';
 import enuTrocsImg from '../assets/Gemini_Generated_Image_wauuatwauuatwauu.png';
 import oneFruitImg from '../assets/Gemini_Generated_Image_v2rn58v2rn58v2rn.png';
+import livreRecetteImg from '../assets/image portfolio livre.webp';
+import couvertureImg from '../assets/couverture.webp';
+import pageRecetteImg from '../assets/page-recette.webp';
 
 export interface Project {
   id: number;
@@ -22,6 +25,7 @@ export interface Project {
     impact: string;
   };
   image: string;
+  illustrations?: string[];
   video?: string;
   tags: string[];
   date: string;
@@ -123,7 +127,8 @@ export const projects: Project[] = [
       overcome: "J'ai créé des gabarits de pages réutilisables sur InDesign pour garantir la cohérence et gagner du temps. Pour les photos, j'ai improvisé un mini-studio (lumière naturelle, fond neutre) et retouché les images sur Lightroom. Pour la nutrition, j'ai consulté des sources fiables (Anses, Ciqual) et vérifié chaque information.",
       impact: "Ce projet m'a appris la rigueur nécessaire pour un travail éditorial de qualité. InDesign est devenu un outil que je maîtrise avec confiance, et je suis capable de produire des documents professionnels print de A à Z. Sur le plan personnel, j'ai découvert un intérêt pour la nutrition sportive qui m'accompagne au quotidien."
     },
-    image: "/MonPortfolio/assets/5.png",
+    image: livreRecetteImg,
+    illustrations: [couvertureImg, pageRecetteImg],
     tags: ["InDesign", "Graphisme", "UX"],
     date: "2025",
     category: "Édition / Design",
@@ -191,6 +196,7 @@ export const projects: Project[] = [
     date: "2025",
     category: "Application Web VR",
     group: "3D",
+    link: "https://loukkka.github.io/ProjetVirtual/",
   },
   {
     id: 8,

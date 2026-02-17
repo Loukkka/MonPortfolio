@@ -178,7 +178,7 @@ export function ProjectsSection() {
                     transition={{ type: 'spring', stiffness: 200, damping: 15 }}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-10 py-5 rounded-2xl text-base font-bold shadow-2xl transition-all cursor-pointer flex items-center gap-3 border-2 border-cyan-400/80 hover:border-cyan-300"
+                    className="px-6 py-3 rounded-2xl text-base font-bold shadow-2xl transition-all cursor-pointer flex items-center gap-3 border-2 border-cyan-400/80 hover:border-cyan-300"
                     style={{
                       background: 'linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%)',
                       boxShadow: '0 0 60px rgba(6, 182, 212, 0.8), 0 0 100px rgba(6, 182, 212, 0.5), 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 2px 20px rgba(255, 255, 255, 0.3)'
