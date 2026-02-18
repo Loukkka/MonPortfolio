@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from 'motion/react';
-import { GraduationCap, Calendar, MapPin, Award, Briefcase } from 'lucide-react';
+import { GraduationCap, Calendar, MapPin, Award, Briefcase, Car, FlaskConical, Building2, BarChart3 } from 'lucide-react';
 import { useRef } from 'react';
 
 const experiences = [
@@ -9,7 +9,7 @@ const experiences = [
     organization: 'la19agency, Tulle',
     type: 'Stage en BUT',
     description: 'Stage de troisième année en 2026 chez la19agency à Tulle : posts, sites WordPress, vidéos et supports de communication.',
-    icon: '💼',
+    icon: Briefcase,
     color: 'from-cyan-500 to-blue-500',
     current: true,
   },
@@ -19,7 +19,7 @@ const experiences = [
     organization: 'SND Digital, Paris',
     type: 'Stage - Communication Digitale',
     description: 'Stage de deuxième année en 2025 chez SND Digital à Paris : création de maquettes, posts, supports de communication et vidéos pour clients.',
-    icon: '🏢',
+    icon: Building2,
     color: 'from-blue-500 to-cyan-500',
   },
   {
@@ -28,7 +28,7 @@ const experiences = [
     organization: 'Présentation SAE',
     type: 'Projet académique',
     description: 'Présentations de situations d\'apprentissage et d\'évaluation en multimédia.',
-    icon: '📊',
+    icon: BarChart3,
     color: 'from-cyan-600 to-blue-600',
   },
   {
@@ -37,7 +37,7 @@ const experiences = [
     organization: 'Lycée',
     type: 'Diplôme',
     description: 'Obtention du baccalauréat avec une orientation vers le numérique et la création.',
-    icon: '🎓',
+    icon: GraduationCap,
     color: 'from-blue-600 to-cyan-600',
   },
   {
@@ -46,7 +46,7 @@ const experiences = [
     organization: 'Projet de recherche STI2D',
     type: 'Projet scolaire',
     description: 'Premier projet de recherche en sciences et technologies de l\'industrie et du développement durable.',
-    icon: '🔬',
+    icon: FlaskConical,
     color: 'from-cyan-500 to-blue-500',
   },
 ];
@@ -72,14 +72,14 @@ const certifications = [
   {
     name: 'Permis B',
     issuer: 'Permis de conduire',
-    icon: '🚗',
+    icon: Car,
     year: '2024',
     color: 'from-cyan-500 to-blue-500',
   },
   {
     name: 'Bac Technologique',
     issuer: 'Éducation Nationale',
-    icon: '🎓',
+    icon: GraduationCap,
     year: '2023',
     color: 'from-blue-500 to-cyan-500',
   },
@@ -123,7 +123,7 @@ export function EducationSection() {
             <span className="text-cyan-400">Formation & Parcours</span>
           </motion.div>
 
-          <h2 className="mb-4 text-5xl">
+          <h2 className="mb-4 text-5xl font-title">
             <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
               Mon Parcours
             </span>
@@ -242,8 +242,8 @@ export function EducationSection() {
                   <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
                   
                   <div className="relative z-10">
-                    <div className="text-4xl mb-2">
-                      {cert.icon}
+                    <div className="w-12 h-12 flex items-center justify-center rounded-xl bg-white/10 mb-2">
+                      <cert.icon className="w-6 h-6 text-white" />
                     </div>
                     <h4 className="text-white mb-1">{cert.name}</h4>
                     <p className="text-gray-300 text-sm">{cert.issuer}</p>
@@ -304,8 +304,8 @@ export function EducationSection() {
 
                     <div className="mt-4">
                       <div className="flex items-start gap-4 mb-3">
-                        <div className="text-4xl">
-                          {exp.icon}
+                        <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30">
+                          <exp.icon className="w-6 h-6 text-cyan-400" />
                         </div>
                         <div className="flex-1">
                           <h4 className="text-white mb-1">{exp.title}</h4>

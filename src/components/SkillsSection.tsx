@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from 'motion/react';
-import { Code2, Palette, Smartphone, Video, Zap } from 'lucide-react';
+import { Code2, Palette, Smartphone, Video, Zap, Code, Globe, Megaphone } from 'lucide-react';
 import { useState, useRef } from 'react';
 
 const skillCategories = [
@@ -11,11 +11,11 @@ const skillCategories = [
     borderColor: 'border-cyan-500/30',
     glowColor: 'shadow-cyan-500/20',
     skills: [
-      { name: 'Photoshop', icon: '🎨', description: 'Retouche photo, composition' },
-      { name: 'Illustrator', icon: '✏️', description: 'Illustration vectorielle' },
-      { name: 'InDesign', icon: '📄', description: 'Mise en page, PAO' },
-      { name: 'Figma', icon: '🎯', description: 'UI/UX Design, prototypage' },
-      { name: 'Blender', icon: '🎲', description: 'Modélisation 3D' },
+      { name: 'Photoshop', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-original.svg', description: 'Retouche photo, composition' },
+      { name: 'Illustrator', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/illustrator/illustrator-original.svg', description: 'Illustration vectorielle' },
+      { name: 'InDesign', logo: 'https://upload.wikimedia.org/wikipedia/commons/4/48/Adobe_InDesign_CC_icon.svg', description: 'Mise en page, PAO' },
+      { name: 'Figma', logo: 'https://cdn.simpleicons.org/figma', description: 'UI/UX Design, prototypage' },
+      { name: 'Blender', logo: 'https://cdn.simpleicons.org/blender', description: 'Modélisation 3D' },
     ],
   },
   {
@@ -26,9 +26,9 @@ const skillCategories = [
     borderColor: 'border-blue-500/30',
     glowColor: 'shadow-blue-500/20',
     skills: [
-      { name: 'Premiere Pro', icon: '🎬', description: 'Montage vidéo professionnel' },
-      { name: 'After Effects', icon: '✨', description: 'Motion design, effets visuels' },
-      { name: 'OBS Studio', icon: '📹', description: 'Capture et streaming vidéo' },
+      { name: 'Premiere Pro', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/premierepro/premierepro-original.svg', description: 'Montage vidéo professionnel' },
+      { name: 'After Effects', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/aftereffects/aftereffects-original.svg', description: 'Motion design, effets visuels' },
+      { name: 'OBS Studio', logo: 'https://cdn.simpleicons.org/obsstudio', description: 'Capture et streaming vidéo' },
     ],
   },
   {
@@ -39,9 +39,9 @@ const skillCategories = [
     borderColor: 'border-cyan-500/30',
     glowColor: 'shadow-cyan-500/20',
     skills: [
-      { name: 'Canva', icon: '🎨', description: 'Design rapide' },
-      { name: 'Notion', icon: '📝', description: 'Organisation' },
-      { name: 'WordPress', icon: '📱', description: 'CMS et sites web' },
+      { name: 'Canva', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/canva/canva-original.svg', description: 'Design rapide' },
+      { name: 'Notion', logo: 'https://cdn.simpleicons.org/notion/white', description: 'Organisation' },
+      { name: 'WordPress', logo: 'https://cdn.simpleicons.org/wordpress', description: 'CMS et sites web' },
     ],
   },
   {
@@ -52,51 +52,45 @@ const skillCategories = [
     borderColor: 'border-blue-500/30',
     glowColor: 'shadow-blue-500/20',
     skills: [
-      { name: 'HTML', icon: '🌐', description: 'Structure web' },
-      { name: 'CSS', icon: '🎨', description: 'Styles et animations' },
-      { name: 'JavaScript', icon: '⚡', description: 'Interactivité' },
-      { name: 'PHP', icon: '🐘', description: 'Backend dynamique' },
-      { name: 'SQL', icon: '🗄️', description: 'Bases de données' },
+      { name: 'HTML', logo: 'https://cdn.simpleicons.org/html5', description: 'Structure web' },
+      { name: 'CSS', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg', description: 'Styles et animations' },
+      { name: 'JavaScript', logo: 'https://cdn.simpleicons.org/javascript', description: 'Interactivité' },
+      { name: 'PHP', logo: 'https://cdn.simpleicons.org/php', description: 'Backend dynamique' },
+      { name: 'SQL', logo: 'https://cdn.simpleicons.org/mysql/white', description: 'Bases de données' },
     ],
   },
 ];
 
-const softSkills = [
-  { 
-    name: 'Créativité', 
-    description: 'Innovation et originalité dans chaque projet',
-    learnedFrom: ['Projets personnels', 'Design thinking', 'Brainstorming'],
-    color: 'from-cyan-500 to-blue-500' 
+const services = [
+  {
+    icon: Palette,
+    title: 'Design UI/UX',
+    features: ['Wireframing', 'Prototypage', 'Design System', 'Tests utilisateurs'],
   },
-  { 
-    name: 'Curiosité', 
-    description: 'Apprentissage continu des nouvelles technologies',
-    learnedFrom: ['Veille techno', 'Auto-formation', 'Expérimentation'],
-    color: 'from-blue-500 to-cyan-500' 
+  {
+    icon: Code,
+    title: 'Développement Web',
+    features: ['HTML/CSS/JS', 'React', 'Responsive Design', 'SEO'],
   },
-  { 
-    name: 'Adaptabilité', 
-    description: 'Flexibilité face aux changements et défis',
-    learnedFrom: ['Projets variés', 'Travail en équipe', 'Challenges'],
-    color: 'from-cyan-600 to-blue-600' 
+  {
+    icon: Video,
+    title: 'Motion Design',
+    features: ['Animation', 'Montage vidéo', 'Motion vidéo', 'Storytelling'],
   },
-  { 
-    name: 'Collaboration', 
-    description: 'Esprit d\'équipe et communication efficace',
-    learnedFrom: ['Projets groupe', 'Workshops', 'Partage'],
-    color: 'from-blue-600 to-cyan-600' 
+  {
+    icon: Globe,
+    title: 'Webdesign',
+    features: ['Landing Pages', 'Sites Vitrine', 'E-commerce', 'CMS'],
   },
-  { 
-    name: 'Rigueur', 
-    description: 'Attention aux détails et qualité du travail',
-    learnedFrom: ['Code reviews', 'Tests qualité', 'Documentation'],
-    color: 'from-cyan-500 to-blue-500' 
+  {
+    icon: Smartphone,
+    title: 'Design Mobile',
+    features: ['App Design', 'Mobile First', 'iOS & Android', 'Ergonomie'],
   },
-  { 
-    name: 'Passion', 
-    description: 'Engagement total dans mes créations',
-    learnedFrom: ['Side projects', 'Communauté', 'Créations perso'],
-    color: 'from-blue-500 to-cyan-500' 
+  {
+    icon: Megaphone,
+    title: 'Communication Digitale',
+    features: ['Social Media', 'Content Creation', 'Branding', 'Stratégie'],
   },
 ];
 
@@ -112,7 +106,7 @@ export function SkillsSection() {
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
 
   return (
-    <div ref={sectionRef} className="min-h-screen relative overflow-hidden py-32">
+    <div ref={sectionRef} className="relative overflow-hidden py-32">
       {/* Animated Background */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
@@ -137,22 +131,22 @@ export function SkillsSection() {
             <div className="w-6 h-6 flex items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 shadow-sm shadow-blue-500/30">
               <Zap className="w-3.5 h-3.5 text-white" />
             </div>
-            <span className="text-cyan-400">Compétences & Expertise</span>
+            <span className="text-cyan-400">Compétences & Services</span>
           </motion.div>
 
-          <h2 className="mb-4 text-5xl">
+          <h2 className="mb-4 text-5xl font-title">
             <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-              Mes Compétences
+              Compétences & Expertises
             </span>
           </h2>
 
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Une combinaison de compétences techniques et créatives pour donner vie à vos projets multimédia.
+            Une palette de compétences techniques et créatives pour donner vie à vos projets multimédia.
           </p>
         </motion.div>
 
         {/* Skill Categories Grid */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 gap-8 mb-20 items-start">
           {skillCategories.map((category, index) => (
             <motion.div
               key={category.id}
@@ -197,7 +191,7 @@ export function SkillsSection() {
                       className="relative"
                     >
                       <div className="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-cyan-500/10 border border-white/5 hover:border-cyan-500/30 transition-all duration-300 group/skill">
-                        <span className="text-3xl">{skill.icon}</span>
+                        <img src={skill.logo} alt={skill.name} className="w-8 h-8 object-contain" />
                         <div className="flex-1">
                           <h4 className="text-white">{skill.name}</h4>
                           <p className="text-gray-400 text-sm">{skill.description}</p>
@@ -236,6 +230,66 @@ export function SkillsSection() {
               />
             </motion.div>
           ))}
+        </div>
+
+        {/* Services Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-8"
+        >
+          <h3 className="text-white text-center mb-12 text-2xl">
+            <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+              Ce que je propose
+            </span>
+          </h3>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {services.map((service, index) => {
+            const Icon = service.icon;
+            return (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08 }}
+                className="group relative"
+              >
+                <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:border-cyan-500/50 transition-all duration-300 h-full flex flex-col">
+                  {/* Icon + Title */}
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 group-hover:scale-110 transition-transform duration-300">
+                      <Icon className="w-5 h-5 text-cyan-400" />
+                    </div>
+                    <h4 className="text-gray-100 text-lg font-medium group-hover:text-cyan-400 transition-colors">
+                      {service.title}
+                    </h4>
+                  </div>
+
+                  {/* Features */}
+                  <div className="flex flex-wrap gap-3 mt-auto">
+                    {service.features.map((feature) => (
+                      <span key={feature} className="px-6 py-2.5 text-sm text-gray-400 bg-white/5 border border-white/10 rounded-lg">
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Bottom Line */}
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: '100%' }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.08 + 0.3, duration: 0.6 }}
+                    className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-b-2xl"
+                  />
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </div>

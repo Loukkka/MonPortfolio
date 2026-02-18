@@ -142,7 +142,7 @@ export function HeroSection() {
                 >
                   Bonjour, je suis
                 </motion.span>
-                <span className="block bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent text-[30px] font-bold no-underline">
+                <span className="block bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent text-[30px] font-bold no-underline font-title">
                   {'Louka Poulbriere'.split('').map((char, index) => (
                     <motion.span
                       key={index}
@@ -178,7 +178,7 @@ export function HeroSection() {
                 transition={{ delay: 0.5 }}
                 className="text-gray-300"
               >
-                Étudiant en BUT Métiers du Multimédia et de l'Internet
+                Créateur d'expériences numériques & développeur web
               </motion.p>
             </div>
 
@@ -218,19 +218,27 @@ export function HeroSection() {
               </Button>
 
               <Button
-                onClick={() => scrollToSection('contact')}
+                onClick={downloadCvAsPdf}
                 variant="outline"
-                className="border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/10 px-8 py-6"
+                className="border-cyan-500/30 text-cyan-400 hover:bg-cyan-500/20 hover:border-cyan-400/60 hover:text-white px-8 py-6 transition-all duration-300"
               >
-                Me contacter
+                <span className="flex items-center gap-2">
+                  Voir CV
+                  <Download className="w-4 h-4" />
+                </span>
               </Button>
 
               <Button
-                onClick={downloadCvAsPdf}
-                className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:from-cyan-400 hover:to-blue-400 border-0 px-8 py-6"
+                onClick={() => scrollToSection('contact')}
+                className="relative group bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 border-0 px-8 py-6 overflow-hidden"
               >
-                <Download className="w-4 h-4 mr-2" />
-                Voir CV
+                <motion.div
+                  className="absolute inset-0 bg-white/20"
+                  initial={{ x: '-100%' }}
+                  whileHover={{ x: '100%' }}
+                  transition={{ duration: 0.5 }}
+                />
+                <span className="relative">Me contacter</span>
               </Button>
             </motion.div>
 
@@ -242,8 +250,8 @@ export function HeroSection() {
               className="flex gap-4 pt-4"
             >
               {[
-                { icon: Github, label: 'GitHub', href: '#' },
-                { icon: Linkedin, label: 'LinkedIn', href: '#' },
+                { icon: Github, label: 'GitHub', href: 'https://github.com/Loukkka' },
+                { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/in/louka-poulbriere-bb09872b0/' },
                 { icon: Mail, label: 'Email', href: 'mailto:louka.poulbriere19@gmail.com' },
               ].map((social) => (
                 <motion.a
@@ -278,8 +286,7 @@ export function HeroSection() {
               />
 
               <motion.div
-                className="relative w-full aspect-square cursor-pointer rounded-2xl overflow-hidden border-2 border-cyan-500/30 shadow-2xl shadow-cyan-500/20"
-                onClick={downloadCvAsPdf}
+                className="relative w-full aspect-square rounded-2xl overflow-hidden border-2 border-cyan-500/30 shadow-2xl shadow-cyan-500/20"
                 whileHover={{ y: -4 }}
                 transition={{ duration: 0.3 }}
               >
@@ -316,8 +323,7 @@ export function HeroSection() {
                       transition={{ delay: 1.1 }}
                       className="mt-6 text-center"
                     >
-                      <p className="text-cyan-400 tracking-widest text-sm">CREATIVE DEVELOPER</p>
-                      <p className="text-gray-400 text-sm mt-2">Cliquez pour télécharger le CV</p>
+                      <p className="text-cyan-400 tracking-widest text-sm">Bienvenue sur mon portfolio</p>
                     </motion.div>
                   </div>
 
@@ -328,32 +334,7 @@ export function HeroSection() {
                 </div>
               </motion.div>
 
-              {/* Floating Stats Cards */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1, type: 'spring' }}
-                className="absolute -bottom-6 -left-6 px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/20 rounded-xl pointer-events-none shadow-xl shadow-cyan-500/10"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
-                }}
-              >
-                <div className="text-cyan-400">BUT MMI</div>
-                <div className="text-gray-400">En cours</div>
-              </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1.2, type: 'spring' }}
-                className="absolute -top-6 -right-6 px-6 py-4 bg-white/5 backdrop-blur-sm border border-white/20 rounded-xl pointer-events-none shadow-xl shadow-blue-500/10"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
-                }}
-              >
-                <div className="text-blue-400">Créatif</div>
-                <div className="text-gray-400">& Passionné</div>
-              </motion.div>
             </div>
           </motion.div>
         </div>

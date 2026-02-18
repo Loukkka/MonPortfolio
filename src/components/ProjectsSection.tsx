@@ -66,7 +66,7 @@ export function ProjectsSection() {
             </div>
             <span className="text-cyan-400">Mes Réalisations</span>
           </div>
-          <h2 className="mb-4 text-5xl">
+          <h2 className="mb-4 text-5xl font-title">
             <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
               Mes Projets
             </span>
@@ -115,39 +115,25 @@ export function ProjectsSection() {
               onMouseLeave={() => setHoveredId(null)}
               onClick={() => navigate(`/projet/${project.slug}`)}
             >
-              <div className="relative h-full bg-black/60 border border-white/10 rounded-2xl overflow-hidden transition-all duration-500 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/20 hover:bg-black/40">
+              <div className="relative h-full bg-black/60 border border-white/10 rounded-2xl overflow-hidden transition-all duration-700 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/20 hover:bg-black/40">
                 {/* Image */}
                 <img
                   src={project.image}
                   alt={project.title}
-                  className={`absolute inset-0 w-full h-full object-cover transition-transform duration-700 ${
-                    hoveredId === project.id ? 'scale-115' : 'scale-100'
+                  className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${
+                    hoveredId === project.id ? 'scale-105 blur-[2px]' : 'scale-100 blur-0'
                   }`}
                 />
 
-                {/* Overlay — 50% shadow by default, disappears on hover */}
-                <div className={`absolute inset-0 transition-all duration-500 ${
+                {/* Overlay — subtle darken by default, slightly lighter on hover */}
+                <div className={`absolute inset-0 transition-all duration-700 ${
                   hoveredId === project.id 
-                    ? 'bg-black/0' 
-                    : 'bg-black/50'
+                    ? 'bg-black/50' 
+                    : 'bg-black/40'
                 }`} />
 
-                {/* Featured */}
-                {project.featured && (
-                  <div 
-                    className={`absolute top-4 right-4 z-20 px-4 py-1.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full border-2 border-white/30 transition-all duration-500 ${
-                      hoveredId === project.id ? 'opacity-0 -translate-y-4' : 'opacity-100 translate-y-0'
-                    }`}
-                    style={{
-                      boxShadow: '0 4px 20px rgba(6, 182, 212, 0.6), 0 0 40px rgba(6, 182, 212, 0.4)'
-                    }}
-                  >
-                    <span className="text-white text-xs font-bold drop-shadow-lg">Featured</span>
-                  </div>
-                )}
-
                 {/* Tags — visible by default, hidden on hover */}
-                <div className={`absolute top-4 left-4 z-20 flex flex-wrap gap-1.5 transition-all duration-500 ${
+                <div className={`absolute top-4 left-4 z-20 flex flex-wrap gap-1.5 transition-all duration-700 ${
                   hoveredId === project.id ? 'opacity-0 -translate-y-4' : 'opacity-100 translate-y-0'
                 }`}>
                   {project.tags.slice(0, 3).map((tag) => (
@@ -164,35 +150,29 @@ export function ProjectsSection() {
                   ))}
                 </div>
 
-                {/* Hover — "Voir le projet" button */}
+                {/* Hover — "Voir le projet" button overlaid on top */}
                 <div
-                  className={`absolute inset-0 z-30 flex items-center justify-center transition-all duration-300 ${
+                  className={`absolute inset-0 z-30 flex items-center justify-center transition-all duration-700 ${
                     hoveredId === project.id ? 'opacity-100' : 'opacity-0 pointer-events-none'
                   }`}
                 >
-                  <motion.a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    animate={hoveredId === project.id ? { scale: 1, y: 0 } : { scale: 0.8, y: 10 }}
+                  <motion.button
+                    onClick={(e) => { e.stopPropagation(); navigate(`/projet/${project.slug}`); }}
+                    animate={hoveredId === project.id ? { scale: 1, y: 0 } : { scale: 0.9, y: 10 }}
                     transition={{ type: 'spring', stiffness: 200, damping: 15 }}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-6 py-3 rounded-2xl text-base font-bold shadow-2xl transition-all cursor-pointer flex items-center gap-3 border-2 border-cyan-400/80 hover:border-cyan-300"
-                    style={{
-                      background: 'linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%)',
-                      boxShadow: '0 0 60px rgba(6, 182, 212, 0.8), 0 0 100px rgba(6, 182, 212, 0.5), 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 2px 20px rgba(255, 255, 255, 0.3)'
-                    }}
+                    className="px-8 py-3.5 rounded-xl text-base font-semibold shadow-[0_0_30px_rgba(59,130,246,0.5)] transition-all cursor-pointer flex items-center gap-2 bg-blue-500 hover:bg-blue-400 backdrop-blur-md"
                   >
-                    <ExternalLink className="w-6 h-6 text-white drop-shadow-lg flex-shrink-0" />
-                    <span className="text-white drop-shadow-2xl font-semibold">Voir le projet</span>
-                  </motion.a>
+                    <ExternalLink className="w-4 h-4 text-white flex-shrink-0" />
+                    <span className="text-white font-medium">Voir le projet</span>
+                  </motion.button>
                 </div>
 
                 {/* Content — visible by default, hidden on hover */}
-                <div className={`absolute bottom-0 left-0 right-0 z-20 p-8 bg-gradient-to-t from-black/80 via-black/50 to-transparent transition-all duration-500 ${
+                <div className={`absolute bottom-0 left-0 right-0 z-20 p-8 bg-gradient-to-t from-black/80 via-black/50 to-transparent transition-all duration-700 ${
                   hoveredId === project.id 
-                    ? 'opacity-0 translate-y-6' 
+                    ? 'opacity-0 translate-y-4' 
                     : 'opacity-100 translate-y-0'
                 }`}>
                   <div className="inline-block px-4 py-1.5 mb-3 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg"

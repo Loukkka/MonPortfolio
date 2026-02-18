@@ -33,7 +33,7 @@ function Model() {
   });
 
   return (
-    <group ref={groupRef} position={[0, -0.2, 0]} scale={2.2}>
+    <group ref={groupRef} position={[0, 0.1, 0]} scale={2.2}>
       <primitive object={scene} />
     </group>
   );
@@ -51,7 +51,7 @@ export function ModelViewer() {
         </div>
       )}
       <Canvas
-        camera={{ position: [0, 0.5, 2.8], fov: 45 }}
+        camera={{ position: [0, 0.3, 2.8], fov: 45 }}
         style={{ width: '100%', height: '100%' }}
         onCreated={() => setLoaded(true)}
       >

@@ -4,6 +4,18 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { projects } from '../data/projects';
 import { FloatingParticles } from './FloatingParticles';
 
+/** Parse text with **bold blue** markers into JSX */
+function highlightText(text: string) {
+  const parts = text.split(/\*\*(.*?)\*\*/g);
+  return parts.map((part, i) =>
+    i % 2 === 1 ? (
+      <span key={i} className="text-cyan-400 font-medium">{part}</span>
+    ) : (
+      <span key={i}>{part}</span>
+    )
+  );
+}
+
 export function ProjectDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -183,7 +195,7 @@ export function ProjectDetailPage() {
               </div>
               À propos du projet
             </h2>
-            <p className="text-gray-300 leading-[1.85] text-[15px] pl-[60px]">{project.fullDescription}</p>
+            <p className="text-gray-300 leading-[1.85] text-[15px] pl-[60px]">{highlightText(project.fullDescription)}</p>
           </div>
         </motion.div>
 
@@ -213,7 +225,7 @@ export function ProjectDetailPage() {
                     </div>
                     
                     {/* Section content */}
-                    <p className="text-gray-400 leading-[1.85] text-[14.5px] pl-[60px]">{section.content}</p>
+                    <p className="text-gray-400 leading-[1.85] text-[14.5px] pl-[60px]">{highlightText(section.content)}</p>
                   </div>
                 </div>
               </motion.div>
@@ -270,6 +282,32 @@ export function ProjectDetailPage() {
           </motion.div>
         )}
 
+        {/* Illustrations */}
+        {project.illustrations && project.illustrations.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mb-12"
+          >
+            <div className="bg-gray-900/50 border border-white/[0.07] rounded-3xl p-8 md:p-12">
+              <h2 className="text-xl font-bold text-white mb-8">Illustrations du projet</h2>
+              <div className="space-y-6">
+                {project.illustrations.map((illustration, index) => (
+                  <div key={index} className="rounded-2xl overflow-hidden border border-white/10 bg-black/30">
+                    <img
+                      src={illustration}
+                      alt={`${project.title} illustration ${index + 1}`}
+                      className="w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {/* CTA Button(s) */}
         {project.links ? (
           <motion.div
@@ -321,31 +359,6 @@ export function ProjectDetailPage() {
             </motion.a>
           </motion.div>
         ) : null}
-
-        {project.illustrations && project.illustrations.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <div className="bg-gray-900/50 border border-white/[0.07] rounded-3xl p-8 md:p-12">
-              <h2 className="text-xl font-bold text-white mb-8">Illustrations du projet</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {project.illustrations.map((illustration, index) => (
-                  <div key={index} className="rounded-2xl overflow-hidden border border-white/10 bg-black/30">
-                    <img
-                      src={illustration}
-                      alt={`${project.title} illustration ${index + 1}`}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
 
         {/* Back button bottom */}
         <motion.div

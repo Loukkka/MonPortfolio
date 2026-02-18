@@ -13,7 +13,6 @@ const AboutSection = lazy(() => import('./components/AboutSection').then(m => ({
 const EducationSection = lazy(() => import('./components/EducationSection').then(m => ({ default: m.EducationSection })));
 const SkillsSection = lazy(() => import('./components/SkillsSection').then(m => ({ default: m.SkillsSection })));
 const ProjectsSection = lazy(() => import('./components/ProjectsSection').then(m => ({ default: m.ProjectsSection })));
-const ServicesSection = lazy(() => import('./components/ServicesSection').then(m => ({ default: m.ServicesSection })));
 const ContactSection = lazy(() => import('./components/ContactSection').then(m => ({ default: m.ContactSection })));
 
 const SectionFallback = () => <div className="min-h-screen" />;
@@ -97,12 +96,6 @@ function HomePage() {
         <section id="skills">
           <Suspense fallback={<SectionFallback />}>
             <SkillsSection />
-          </Suspense>
-        </section>
-
-        <section id="services">
-          <Suspense fallback={<SectionFallback />}>
-            <ServicesSection />
           </Suspense>
         </section>
 

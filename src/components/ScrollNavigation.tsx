@@ -8,7 +8,6 @@ const navItems = [
   { id: 'about', label: 'À propos' },
   { id: 'education', label: 'Parcours' },
   { id: 'skills', label: 'Compétences' },
-  { id: 'services', label: 'Services' },
   { id: 'contact', label: 'Contact' },
 ];
 
@@ -131,7 +130,7 @@ export function ScrollNavigation() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => scrollToSection('contact')}
-              className="hidden md:block relative px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:shadow-lg hover:shadow-cyan-500/50 rounded-lg transition-all overflow-hidden group"
+              className="hidden md:block relative px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:shadow-lg hover:shadow-cyan-500/30 rounded-lg transition-all overflow-hidden group"
             >
               <motion.div
                 className="absolute inset-0 bg-white/20"
