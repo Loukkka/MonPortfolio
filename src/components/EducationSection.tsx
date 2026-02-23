@@ -266,55 +266,55 @@ export function EducationSection() {
           viewport={{ once: true }}
           className="relative"
         >
-          <h3 className="text-white text-center mb-12 flex items-center justify-center gap-2 text-3xl">
+          <h3 className="text-white text-center mb-8 md:mb-12 flex items-center justify-center gap-2 text-xl sm:text-2xl lg:text-3xl">
             <Briefcase className="w-5 h-5 text-white" />
             Chronologie des Expériences
           </h3>
 
-          {/* Timeline Line */}
-          <div className="absolute left-1/2 top-20 bottom-0 w-1 bg-gradient-to-b from-cyan-500 to-blue-500 opacity-30 hidden lg:block" />
+          {/* Timeline Line - desktop only */}
+          <div className="absolute left-1/2 top-24 bottom-0 w-1 bg-gradient-to-b from-cyan-500 to-blue-500 opacity-30 hidden lg:block" />
 
-          <div className="space-y-12">
+          <div className="space-y-8 md:space-y-12">
             {experiences.map((exp, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className={`flex flex-col lg:flex-row gap-8 items-center ${
+                className={`relative flex flex-col lg:flex-row gap-4 lg:gap-8 items-start lg:items-center ${
                   index % 2 === 0 ? 'lg:flex-row-reverse' : ''
                 }`}
               >
                 {/* Content Card */}
                 <motion.div
                   whileHover={{ scale: 1.02, rotateY: index % 2 === 0 ? -3 : 3 }}
-                  className="flex-1 relative group/exp"
+                  className="flex-1 w-full relative group/exp"
                 >
-                  <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-cyan-500/50 transition-all duration-500">
+                  <div className="relative bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:border-cyan-500/50 transition-all duration-500">
                     {/* Year Badge */}
                     <motion.div
-                      className={`absolute -top-4 ${index % 2 === 0 ? 'right-6' : 'left-6'} px-4 py-2 bg-gradient-to-r ${exp.color} rounded-full shadow-lg`}
+                      className={`absolute -top-4 left-4 sm:left-6 ${index % 2 === 0 ? 'lg:left-auto lg:right-6' : 'lg:left-6'} px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r ${exp.color} rounded-full shadow-lg`}
                     >
-                      <span className="text-white flex items-center gap-2">
-                        <Calendar className="w-4 h-4" />
+                      <span className="text-white flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base">
+                        <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         {exp.year}
                       </span>
                     </motion.div>
 
                     <div className="mt-4">
-                      <div className="flex items-start gap-4 mb-3">
-                        <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30">
-                          <exp.icon className="w-6 h-6 text-cyan-400" />
+                      <div className="flex items-start gap-3 sm:gap-4 mb-3">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 flex-shrink-0 flex items-center justify-center rounded-lg sm:rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30">
+                          <exp.icon className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-400" />
                         </div>
-                        <div className="flex-1">
-                          <h4 className="text-white mb-1">{exp.title}</h4>
-                          <p className="text-cyan-400">{exp.organization}</p>
-                          <p className="text-gray-500 text-sm">{exp.type}</p>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-white mb-1 text-sm sm:text-base">{exp.title}</h4>
+                          <p className="text-cyan-400 text-sm sm:text-base">{exp.organization}</p>
+                          <p className="text-gray-500 text-xs sm:text-sm">{exp.type}</p>
                         </div>
                       </div>
                       
-                      <p className="text-gray-400 leading-relaxed">
+                      <p className="text-gray-400 leading-relaxed text-sm sm:text-base">
                         {exp.description}
                       </p>
                     </div>
@@ -337,16 +337,7 @@ export function EducationSection() {
                   />
                 </motion.div>
 
-                {/* Timeline Dot (Desktop) */}
-                <motion.div
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 + 0.2, type: 'spring' }}
-                  className="hidden lg:flex w-12 h-12 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 border-4 border-black shadow-2xl shadow-cyan-500/30 z-10"
-                >
-                  <div className="w-4 h-4 rounded-full bg-white" />
-                </motion.div>
+
 
                 {/* Spacer for alternating layout */}
                 <div className="flex-1 hidden lg:block" />
