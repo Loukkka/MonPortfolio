@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { ArrowDown, Github, Linkedin, Mail, Download } from 'lucide-react';
 import { Button } from './ui/button';
-import cvImage from '../assets/CV portfolio  qr code.png';
+import cvPdf from '../assets/CV Louka Poulbriere.pdf';
 import { Logo } from './Logo';
 
 export function HeroSection() {
@@ -15,37 +15,11 @@ export function HeroSection() {
     }
   };
 
-  const downloadCvAsPdf = async () => {
-    const { jsPDF } = await import('jspdf');
-
-    const image = new Image();
-    image.src = cvImage;
-
-    await new Promise<void>((resolve, reject) => {
-      image.onload = () => resolve();
-      image.onerror = () => reject(new Error('Impossible de charger l\'image du CV'));
-    });
-
-    const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: 'a4' });
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const imageRatio = image.width / image.height;
-    const pageRatio = pageWidth / pageHeight;
-
-    let renderWidth = pageWidth;
-    let renderHeight = pageHeight;
-
-    if (imageRatio > pageRatio) {
-      renderHeight = pageWidth / imageRatio;
-    } else {
-      renderWidth = pageHeight * imageRatio;
-    }
-
-    const x = (pageWidth - renderWidth) / 2;
-    const y = (pageHeight - renderHeight) / 2;
-
-    pdf.addImage(image, 'PNG', x, y, renderWidth, renderHeight, undefined, 'FAST');
-    pdf.save('CV-Louka-Poulbriere.pdf');
+  const downloadCvAsPdf = () => {
+    const link = document.createElement('a');
+    link.href = cvPdf;
+    link.download = 'CV-Louka-Poulbriere.pdf';
+    link.click();
   };
 
   return (
